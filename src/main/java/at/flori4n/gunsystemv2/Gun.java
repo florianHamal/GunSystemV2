@@ -13,6 +13,7 @@ import org.github.paperspigot.Title;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Data
@@ -57,8 +58,8 @@ public class Gun {
         if (timeout == 1)status = "-";
         if (timeout>0)timeout--;
         String message = "";
-        if (!status.equals("-")) message = ChatColor.RED + status;
-        owner.sendTitle(new Title(message, currMag+"/"+magSize,1,40,1));
+        if (!status.equals("-")) message = status;
+        owner.sendTitle(new Title(ChatColor.RED+message, currMag+"/"+magSize,0,40,0));
         updateLore(item);
     }
 
@@ -90,20 +91,22 @@ public class Gun {
         }
 
     }
-    public void shoot(){
+    public boolean shoot(){
         if (currMag<=0){
-            return;
+            return false;
         }
         currMag --;
         Arrow projectile = owner.launchProjectile(Arrow.class);
         projectile.setVelocity(projectile.getVelocity().multiply(1));
         projectile.setMetadata(SIGNATURE, new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
+        Manager.addBullet(projectile);
         updateLore(item);
+        return true;
     };
     public void reload(){
         timeout = reloadTime;
         currMag = magSize;
-        owner.sendTitle(new Title("", ChatColor.RED + "Reloading",10,3,10));
+        owner.sendTitle(new Title("", ChatColor.RED + "Reloading",0,40,0));
         status = "Reloading";
         updateLore(item);
     };

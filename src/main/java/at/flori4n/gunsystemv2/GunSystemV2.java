@@ -1,6 +1,7 @@
 package at.flori4n.gunsystemv2;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class GunSystemV2 extends JavaPlugin {
@@ -9,6 +10,9 @@ public final class GunSystemV2 extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        Bukkit.getPluginManager().registerEvents(new Listeners(),this);
+        getCommand("guns").setExecutor(new Commands());
+        Manager.start();
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Manager {
                     ItemStack item = p.getItemInHand();
                     if (!Gun.isGun(item))return;
                     Gun gun = new Gun(item,p);
-
+                    gun.update();
                 }
             }
         },0,5);

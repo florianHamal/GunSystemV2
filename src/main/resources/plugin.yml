@@ -1,3 +1,7 @@
 name: GunSystemV2
 version: '${project.version}'
 main: at.flori4n.gunsystemv2.GunSystemV2
+
+commands:
+  guns:
+    description: -;

@@ -31,6 +31,7 @@ public class Gun {
     private int timeout;
     private String status;
     private String effect;
+    private int projectileSpeed;
     public static final String SIGNATURE = "at.flori4n_.GunSystemV2";
 
     public Gun(ItemStack item, Player owner) {
@@ -44,7 +45,8 @@ public class Gun {
         speed = Integer.parseInt(lore.get(3).split(" ")[1]);
         timeout = Integer.parseInt(lore.get(4).split(" ")[1]);
         status = lore.get(5).split(" ")[1];
-        effect = lore.get(7);
+        effect = (lore.get(7).split(" ")[1]);
+        projectileSpeed = Integer.parseInt(lore.get(8).split(" ")[1]);
 
         name = item.getItemMeta().getDisplayName();
     }
@@ -60,10 +62,12 @@ public class Gun {
 
     public void update(){
         if (timeout == 1)status = "-";
-        if (timeout>0)timeout--;
-        String message = "";
-        if (!status.equals("-")) message = status;
-        owner.sendTitle(new Title(ChatColor.RED+message, currMag+"/"+magSize,0,40,0));
+        if (timeout>0) timeout--;
+        if (!status.equals("-"))
+            owner.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,40,0));
+        else
+            owner.sendTitle(new Title("", currMag+"/"+magSize,0,40,0));
+
         updateLore(item);
     }
 
@@ -71,7 +75,7 @@ public class Gun {
         return timeout == 0;
     }
 
-    public static void createGun(ItemStack item,String name,int damage,int reloadTime, int speed, int magSize,String effect) {
+    public static void createGun(ItemStack item,String name,int damage,int reloadTime, int speed, int magSize,String effect,int projectileSpeed) {
         List<String> lore = new ArrayList<>();
         lore.add(magSize+"/"+magSize);
         lore.add("Damage: " + damage);
@@ -80,10 +84,9 @@ public class Gun {
         lore.add("Timeout: 0");
         lore.add("Status: -");
         lore.add(SIGNATURE);
-        System.out.println(effect);
-        System.out.println(Effect.FLAME.getName());
         if (Effect.getByName(effect)==null) System.out.println("PENIS___________");;
-        lore.add(effect);
+        lore.add("Effect: "+effect);
+        lore.add("Projectile_Speed: "+projectileSpeed);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setLore(lore);
         itemMeta.setDisplayName(name);
@@ -105,7 +108,8 @@ public class Gun {
         }
         currMag --;
         Arrow projectile = owner.launchProjectile(Arrow.class);
-        projectile.setVelocity(projectile.getVelocity().multiply(1));
+        timeout=speed;
+        projectile.setVelocity(projectile.getVelocity().multiply(projectileSpeed));
         projectile.setMetadata(SIGNATURE+".damage", new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
@@ -116,7 +120,6 @@ public class Gun {
     public void reload(){
         timeout = reloadTime;
         currMag = magSize;
-        owner.sendTitle(new Title("", ChatColor.RED + "Reloading",0,40,0));
         status = "Reloading";
         updateLore(item);
     };

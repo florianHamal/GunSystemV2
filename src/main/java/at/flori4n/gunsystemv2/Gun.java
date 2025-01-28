@@ -84,6 +84,9 @@ public class Gun {
         lore.add("Timeout: 0");
         lore.add("Status: -");
         lore.add(SIGNATURE);
+
+        //todo
+        //add better error message
         if (Effect.getByName(effect)==null) System.out.println("PENIS___________");;
         lore.add("Effect: "+effect);
         lore.add("Projectile_Speed: "+projectileSpeed);

@@ -15,7 +15,7 @@ public class Commands implements CommandExecutor {
         try {
             switch (strings[0]) {
                 case "createGun":
-                    Gun.createGun(player.getItemInHand(),strings[1],Integer.parseInt(strings[2]),Integer.parseInt(strings[3]),Integer.parseInt(strings[4]),Integer.parseInt(strings[5]));
+                    Gun.createGun(player.getItemInHand(),strings[1],Integer.parseInt(strings[2]),Integer.parseInt(strings[3]),Integer.parseInt(strings[4]),Integer.parseInt(strings[5]),strings[6]);
                     break;
                 default:
                     player.sendMessage("wrong Command");

@@ -3,6 +3,7 @@ package at.flori4n.gunsystemv2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ public class Gun {
     private int speed;
     private int timeout;
     private String status;
+    private String effect;
     public static final String SIGNATURE = "at.flori4n_.GunSystemV2";
 
     public Gun(ItemStack item, Player owner) {
@@ -42,6 +44,8 @@ public class Gun {
         speed = Integer.parseInt(lore.get(3).split(" ")[1]);
         timeout = Integer.parseInt(lore.get(4).split(" ")[1]);
         status = lore.get(5).split(" ")[1];
+        effect = lore.get(7);
+
         name = item.getItemMeta().getDisplayName();
     }
     private void updateLore(ItemStack item) {
@@ -67,7 +71,7 @@ public class Gun {
         return timeout == 0;
     }
 
-    public static void createGun(ItemStack item,String name,int damage,int reloadTime, int speed, int magSize) {
+    public static void createGun(ItemStack item,String name,int damage,int reloadTime, int speed, int magSize,String effect) {
         List<String> lore = new ArrayList<>();
         lore.add(magSize+"/"+magSize);
         lore.add("Damage: " + damage);
@@ -76,6 +80,10 @@ public class Gun {
         lore.add("Timeout: 0");
         lore.add("Status: -");
         lore.add(SIGNATURE);
+        System.out.println(effect);
+        System.out.println(Effect.FLAME.getName());
+        if (Effect.getByName(effect)==null) System.out.println("PENIS___________");;
+        lore.add(effect);
         ItemMeta itemMeta = item.getItemMeta();
         itemMeta.setLore(lore);
         itemMeta.setDisplayName(name);
@@ -98,8 +106,9 @@ public class Gun {
         currMag --;
         Arrow projectile = owner.launchProjectile(Arrow.class);
         projectile.setVelocity(projectile.getVelocity().multiply(1));
-        projectile.setMetadata(SIGNATURE, new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
-        Manager.addBullet(projectile);
+        projectile.setMetadata(SIGNATURE+".damage", new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
+        projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
+        ParticleManager.getInstance().addProjectile(projectile);
         updateLore(item);
         return true;
     };

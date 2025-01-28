@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -30,8 +31,8 @@ public class Listeners implements Listener {
     @EventHandler
     public void checkImpact(EntityDamageByEntityEvent event) {
         if (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) return;
-        if (event.getDamager().hasMetadata(Gun.SIGNATURE)){
-            event.setDamage(event.getDamager().getMetadata(Gun.SIGNATURE).get(0).asInt());
+        if (event.getDamager().hasMetadata(Gun.SIGNATURE+".damage")){
+            event.setDamage(event.getDamager().getMetadata(Gun.SIGNATURE+".damage").get(0).asInt());
         }
     }
 
@@ -43,5 +44,13 @@ public class Listeners implements Listener {
         if (!Gun.isGun(player.getItemInHand()))return;
         Gun gun = new Gun(player.getItemInHand(), player);
         if (gun.shoot()) event.setCancelled(true);
+    }
+    @EventHandler
+    public void onProjectileLand(ProjectileHitEvent event) {
+        if (event.getEntity().hasMetadata(Gun.SIGNATURE+".damage")){
+            ParticleManager.getInstance().removeProjectile(event.getEntity());
+            event.getEntity().remove();
+        }
+
     }
 }

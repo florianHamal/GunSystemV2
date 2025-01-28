@@ -109,6 +109,7 @@ public class Gun {
         projectile.setMetadata(SIGNATURE+".damage", new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
+        projectile.setShooter(owner);
         updateLore(item);
         return true;
     };

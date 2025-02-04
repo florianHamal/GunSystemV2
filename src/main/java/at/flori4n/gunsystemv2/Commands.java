@@ -20,6 +20,11 @@ public class Commands implements CommandExecutor {
                     break;
                 case "getEffectNames":
                     player.sendMessage(getEffectNames());
+                    break;
+                case "help":
+                    player.sendMessage("/gun getEffectNames");
+                    player.sendMessage("/gun createGun name damage reloadTime speed magSize effect projectileSpeed");
+                    break;
                 default:
                     player.sendMessage("wrong Command");
             }
@@ -29,6 +34,8 @@ public class Commands implements CommandExecutor {
         return false;
     }
 
+
+    //just practicing some regex XD
     private String getEffectNames(){
         return Effect.CLICK2.getName()+ ", "+
                 Effect.BOW_FIRE.getName()+ ", "+

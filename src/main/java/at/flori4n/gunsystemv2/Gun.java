@@ -62,9 +62,9 @@ public class Gun {
         if (timeout == 1)status = "-";
         if (timeout>0) timeout--;
         if (!status.equals("-"))
-            holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,40,0));
+            holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,5,0));
         else
-            holder.sendTitle(new Title("", currMag+"/"+magSize,0,40,0));
+            holder.sendTitle(new Title("", currMag+"/"+magSize,0,5,0));
 
         updateLore(item);
     }
@@ -143,7 +143,7 @@ public class Gun {
         gunManager.removeGunIfPresent(holder);
         gunManager.addGun(gun);
     }
-    
+
     public void setTimeout(int timeout) {
         this.timeout = timeout;
         updateGunStats();

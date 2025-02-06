@@ -8,6 +8,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
@@ -63,6 +65,25 @@ public class Listeners implements Listener {
         gunManager.addGun(
                 new Gun(item, player)
         );
+    }
+    @EventHandler
+    public void inventoryDrag(InventoryDragEvent event) {
+        System.out.println(event.getView().getTitle());
+        System.out.println(event.getResult());
+        System.out.println(event.getView().getCursor().getType());
+        event.getInventorySlots().forEach(integer -> System.out.println(integer));
+    }
+
+    //needed cuz swaps in inventory don't call item in hand event
+    @EventHandler
+    public void inventoryClick(InventoryClickEvent event) {
+        if (!(event.getInventory().getHolder() instanceof Player))return;
+        Player player = (Player) event.getInventory().getHolder();;
+        if (player.getInventory().getHeldItemSlot()!=event.getSlot())return;
+        gunManager.removeGunIfPresent(player);
+        ItemStack item = event.getCursor();
+        if (!Gun.isGun(item))return;
+        gunManager.addGun(new Gun(item, player));
     }
 
 }

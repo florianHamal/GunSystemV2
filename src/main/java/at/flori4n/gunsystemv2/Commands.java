@@ -12,11 +12,13 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
+        GunManager gunManager = GunManager.getInstance();
         if (!player.hasPermission("setup"))return false;
         try {
             switch (strings[0]) {
                 case "createGun":
-                    Gun.createGun(player.getItemInHand(),strings[1],Integer.parseInt(strings[2]),Integer.parseInt(strings[3]),Integer.parseInt(strings[4]),Integer.parseInt(strings[5]),strings[6],Integer.parseInt(strings[7]));
+                    Gun gun = Gun.createGun(player,strings[1],Integer.parseInt(strings[2]),Integer.parseInt(strings[3]),Integer.parseInt(strings[4]),Integer.parseInt(strings[5]),strings[6],Integer.parseInt(strings[7]));
+                    gunManager.addGun(gun);
                     break;
                 case "getEffectNames":
                     player.sendMessage(getEffectNames());

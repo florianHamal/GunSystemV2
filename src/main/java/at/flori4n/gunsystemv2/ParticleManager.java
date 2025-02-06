@@ -19,7 +19,7 @@ public class ParticleManager {
                     if (!projectile.hasMetadata(Gun.SIGNATURE+".effect"))continue;
                     Effect effect = Effect.getByName(projectile.getMetadata(Gun.SIGNATURE+".effect").get(0).asString());
                     if (effect != null)
-                        projectile.getWorld().spigot().playEffect(projectile.getLocation(),effect,1,1,0,0,0,0.01f,4 ,500);
+                        projectile.getWorld().spigot().playEffect(projectile.getLocation(),effect,1,1,0,0,0,0.01f,1 ,500);
                 }
             }
         },0,1);

@@ -47,6 +47,7 @@ public class Gun {
 
         name = item.getItemMeta().getDisplayName();
     }
+
     private void updateLore(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
@@ -72,7 +73,8 @@ public class Gun {
         return timeout == 0;
     }
 
-    public static void createGun(ItemStack item,String name,int damage,int reloadTime, int speed, int magSize,String effect,int projectileSpeed) {
+    public static Gun createGun(Player holder,String name,int damage,int reloadTime, int speed, int magSize,String effect,int projectileSpeed) {
+        ItemStack item = holder.getItemInHand();
         List<String> lore = new ArrayList<>();
         lore.add(magSize+"/"+magSize);
         lore.add("Damage: " + damage);
@@ -87,6 +89,7 @@ public class Gun {
         itemMeta.setLore(lore);
         itemMeta.setDisplayName(name);
         item.setItemMeta(itemMeta);
+        return new Gun(item,holder);
     }
     public static boolean isGun(ItemStack item) {
         try {

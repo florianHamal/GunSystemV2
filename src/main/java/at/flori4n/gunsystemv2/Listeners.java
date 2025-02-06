@@ -12,13 +12,15 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class Listeners implements Listener {
+    private final GunManager gunManager =GunManager.getInstance();
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getItem()==null)return;
         if (!Gun.isGun(event.getItem()))return;
-        Gun gun = new Gun(event.getItem(), event.getPlayer());
+        Gun gun = gunManager.getGun(event.getPlayer());
         if (!gun.isReady())return;
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             gun.reload();
@@ -42,7 +44,7 @@ public class Listeners implements Listener {
         if (!(event.getDamager() instanceof Player))return;
         Player player = (Player) event.getDamager();
         if (!Gun.isGun(player.getItemInHand()))return;
-        Gun gun = new Gun(player.getItemInHand(), player);
+        Gun gun = gunManager.getGun(player);
         if (gun.shoot()) event.setCancelled(true);
     }
     @EventHandler
@@ -51,6 +53,16 @@ public class Listeners implements Listener {
             ParticleManager.getInstance().removeProjectile(event.getEntity());
             event.getEntity().remove();
         }
-
     }
+    @EventHandler
+    public void playerHoldItem(PlayerItemHeldEvent event) {
+        Player player = event.getPlayer();
+        gunManager.removeGunIfPresent(player);
+        ItemStack item = player.getInventory().getItem(event.getNewSlot());
+        if (!Gun.isGun(item))return;
+        gunManager.addGun(
+                new Gun(item, player)
+        );
+    }
+
 }

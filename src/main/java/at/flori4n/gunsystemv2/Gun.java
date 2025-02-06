@@ -3,9 +3,7 @@ package at.flori4n.gunsystemv2;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,14 +12,13 @@ import org.github.paperspigot.Title;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 public class Gun {
     ItemStack item;
-    private Player owner;
+    private Player holder;
     private int reloadTime;
     private int magSize;
     private int currMag;
@@ -34,9 +31,9 @@ public class Gun {
     private int projectileSpeed;
     public static final String SIGNATURE = "at.flori4n_.GunSystemV2";
 
-    public Gun(ItemStack item, Player owner) {
+    public Gun(ItemStack item, Player holder) {
         this.item = item;
-        this.owner = owner;
+        this.holder = holder;
         List<String> lore = item.getItemMeta().getLore();
         currMag  = Integer.parseInt(lore.get(0).split("/")[0]);
         magSize = Integer.parseInt(lore.get(0).split("/")[1]);
@@ -64,9 +61,9 @@ public class Gun {
         if (timeout == 1)status = "-";
         if (timeout>0) timeout--;
         if (!status.equals("-"))
-            owner.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,40,0));
+            holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,40,0));
         else
-            owner.sendTitle(new Title("", currMag+"/"+magSize,0,40,0));
+            holder.sendTitle(new Title("", currMag+"/"+magSize,0,40,0));
 
         updateLore(item);
     }
@@ -106,13 +103,13 @@ public class Gun {
             return false;
         }
         currMag --;
-        Arrow projectile = owner.launchProjectile(Arrow.class);
+        Arrow projectile = holder.launchProjectile(Arrow.class);
         timeout=speed;
         projectile.setVelocity(projectile.getVelocity().multiply(projectileSpeed));
         projectile.setMetadata(SIGNATURE+".damage", new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
-        projectile.setShooter(owner);
+        projectile.setShooter(holder);
         updateLore(item);
         return true;
     };
@@ -122,6 +119,7 @@ public class Gun {
         status = "Reloading";
         updateLore(item);
     };
+
 
     @Override
     public String toString() {

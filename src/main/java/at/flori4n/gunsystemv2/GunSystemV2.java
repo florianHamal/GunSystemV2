@@ -12,7 +12,6 @@ public final class GunSystemV2 extends JavaPlugin {
         plugin = this;
         Bukkit.getPluginManager().registerEvents(new Listeners(),this);
         getCommand("guns").setExecutor(new Commands());
-        UpdateManager.start();
     }
 
     @Override

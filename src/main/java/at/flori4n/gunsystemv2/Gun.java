@@ -48,8 +48,8 @@ public class Gun {
         name = item.getItemMeta().getDisplayName();
     }
 
-    private void updateLore(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
+    private void updateLore() {
+        ItemMeta meta = holder.getItemInHand().getItemMeta();
         List<String> lore = meta.getLore();
         lore.set(4, "Timeout: "+timeout);
         lore.set(5, "Status: "+ status);
@@ -65,8 +65,7 @@ public class Gun {
             holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,5,0));
         else
             holder.sendTitle(new Title("", currMag+"/"+magSize,0,5,0));
-
-        updateLore(item);
+        updateLore();
     }
 
     public boolean isReady(){
@@ -113,14 +112,14 @@ public class Gun {
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
         projectile.setShooter(holder);
-        updateLore(item);
+        updateLore();
         return true;
     };
     public void reload(){
         timeout = reloadTime;
         currMag = magSize;
         status = "Reloading";
-        updateLore(item);
+        updateLore();
     };
 
 

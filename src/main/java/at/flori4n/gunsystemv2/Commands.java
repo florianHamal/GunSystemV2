@@ -24,8 +24,39 @@ public class Commands implements CommandExecutor {
                     player.sendMessage(getEffectNames());
                     break;
                 case "help":
-                    player.sendMessage("/gun getEffectNames");
-                    player.sendMessage("/gun createGun name damage reloadTime speed magSize effect projectileSpeed");
+                    player.sendMessage("--------help--------\n"+
+                                        "/guns getEffectNames\n"+
+                                        "/guns createGun name damage reloadTime speed magSize effect projectileSpeed\n"+
+                                        "/guns {setName,setDamage,setReloadTime,setSpeed,setMagSize,setEffect,setProjectileSpeed}\n"+
+                                        "--------------------");
+                    break;
+                case "setName":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setName(strings[1]);
+                    break;
+                case "setDamage":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setDamage(Integer.parseInt(strings[1]));
+                    break;
+                case "setReloadTime":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setReloadTime(Integer.parseInt(strings[1]));
+                    break;
+                case "setSpeed":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setSpeed(Integer.parseInt(strings[1]));
+                    break;
+                case "setMagSize":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setMagSize(Integer.parseInt(strings[1]));
+                    break;
+                case "setEffect":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setEffect(String.valueOf(Integer.parseInt(strings[1])));
+                    break;
+                case "setProjectileSpeed":
+                    if (!Gun.isGun(player.getItemInHand()))break;
+                    gunManager.getGun(player).setProjectileSpeed(Integer.parseInt(strings[1]));
                     break;
                 default:
                     player.sendMessage("wrong Command");

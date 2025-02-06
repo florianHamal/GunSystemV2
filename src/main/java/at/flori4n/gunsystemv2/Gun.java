@@ -136,4 +136,45 @@ public class Gun {
                 ", status='" + status + '\'' +
                 '}';
     }
+
+    private void updateGunStats(){
+        Gun gun = createGun(holder,name,damage,reloadTime,speed,magSize,effect,projectileSpeed);
+        GunManager gunManager = GunManager.getInstance();
+        gunManager.removeGunIfPresent(holder);
+        gunManager.addGun(gun);
+    }
+    
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+        updateGunStats();
+    }
+    public void setReloadTime(int reloadTime) {
+        this.reloadTime = reloadTime;
+        updateGunStats();
+    }
+
+    public void setMagSize(int magSize) {
+        this.magSize = magSize;
+        updateGunStats();
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        updateGunStats();
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+        updateGunStats();
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+        updateGunStats();
+    }
+
+    public void setEffect(String effect) {
+        this.effect = effect;
+        updateGunStats();
+    }
 }

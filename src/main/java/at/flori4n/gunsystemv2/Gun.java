@@ -2,7 +2,9 @@ package at.flori4n.gunsystemv2;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -112,6 +114,8 @@ public class Gun {
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
         projectile.setShooter(holder);
+
+        holder.getLocation().getWorld().playSound(holder.getLocation(), Sound.PISTON_EXTEND,2f,2f);
         updateLore();
         return true;
     };

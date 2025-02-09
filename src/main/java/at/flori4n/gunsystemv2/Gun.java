@@ -67,6 +67,7 @@ public class Gun {
             holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,5,0));
         else
             holder.sendTitle(new Title("", currMag+"/"+magSize,0,5,0));
+        updateLore();
     }
 
     public boolean isReady(){
@@ -114,12 +115,14 @@ public class Gun {
         ParticleManager.getInstance().addProjectile(projectile);
         projectile.setShooter(holder);
         holder.getLocation().getWorld().playSound(holder.getLocation(), Sound.PISTON_RETRACT,2f,2f);
+        updateLore();
         return true;
     };
     public void reload(){
         timeout = reloadTime;
         currMag = magSize;
         status = "Reloading";
+        updateLore();
     };
 
 

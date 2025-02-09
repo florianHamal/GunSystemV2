@@ -22,28 +22,13 @@ public class GunManager {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(GunSystemV2.getPlugin(),new Runnable(){
             @Override
             public void run() {
-                guns.forEach((player, gun) -> {
-                    gun.update();
-                });
+                for(Player p : Bukkit.getOnlinePlayers()){
+                    if (Gun.isGun(p.getItemInHand())){
+                        new Gun(p.getItemInHand(),p).update();
+                    }
+                }
             }
         },0,1);
-        //gun scan coroutine
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(GunSystemV2.getPlugin(),new Runnable(){
-            @Override
-            public void run() {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    ItemStack item = player.getItemInHand();
-                    if (Gun.isGun(item)){
-                        if ((!guns.containsKey(player))||(!guns.get(player).getItem().equals(item))){
-                            guns.put(player,new Gun(item,player));
-                        }
-                        guns.get(player).updateLore();
-                    }else {
-                        guns.remove(player);
-                    }
-                });
-            }
-        },0,20);
     }
     private GunManager(){
         start();
@@ -51,8 +36,5 @@ public class GunManager {
     public static GunManager getInstance(){
         if (instance == null)instance = new GunManager();
         return instance;
-    }
-    public Gun getGun(Player holder){
-        return guns.get(holder);
     }
 }

@@ -23,8 +23,9 @@ public class Listeners implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getItem()==null)return;
         Player player = event.getPlayer();
-        if (!gunManager.getGuns().containsKey(player))return;
-        Gun gun = gunManager.getGun(player);
+        if (!Gun.isGun(player.getItemInHand()))return;
+        Gun gun = new Gun(player.getItemInHand(),player);
+        if (!gun.isReady())return;
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             gun.reload();
         }
@@ -46,8 +47,9 @@ public class Listeners implements Listener {
     public void onHitWithWeapon(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))return;
         Player player = (Player) event.getDamager();
-        if (!gunManager.getGuns().containsKey(player))return;
-        if (gunManager.getGun(player).shoot()) event.setCancelled(true);
+        if (Gun.isGun(player.getItemInHand()))return;
+        Gun gun = new Gun(player.getItemInHand(),player);
+        if (gun.shoot()) event.setCancelled(true);
     }
     @EventHandler
     public void onProjectileLand(ProjectileHitEvent event) {

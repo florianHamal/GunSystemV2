@@ -37,6 +37,7 @@ public class GunManager {
                         if ((!guns.containsKey(player))||(!guns.get(player).getItem().equals(item))){
                             guns.put(player,new Gun(item,player));
                         }
+                        guns.get(player).updateLore();
                     }else {
                         guns.remove(player);
                     }

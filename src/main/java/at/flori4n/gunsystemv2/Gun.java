@@ -49,7 +49,7 @@ public class Gun {
         name = item.getItemMeta().getDisplayName();
     }
 
-    private void updateLore() {
+    public void updateLore() {
         ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         lore.set(4, "Timeout: "+timeout);
@@ -58,12 +58,10 @@ public class Gun {
         meta.setLore(lore);
         holder.getItemInHand().setItemMeta(meta);
     }
-
     public void update(){
         if (timeout == 1)status = "-";
         if (timeout>0){
             timeout--;
-            updateLore();
         }
         if (!status.equals("-"))
             holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,5,0));
@@ -116,14 +114,12 @@ public class Gun {
         ParticleManager.getInstance().addProjectile(projectile);
         projectile.setShooter(holder);
         holder.getLocation().getWorld().playSound(holder.getLocation(), Sound.PISTON_RETRACT,2f,2f);
-        updateLore();
         return true;
     };
     public void reload(){
         timeout = reloadTime;
         currMag = magSize;
         status = "Reloading";
-        updateLore();
     };
 
 

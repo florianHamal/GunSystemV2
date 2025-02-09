@@ -22,9 +22,9 @@ public class Listeners implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getItem()==null)return;
-        if (!Gun.isGun(event.getItem()))return;
-        Gun gun = gunManager.getGun(event.getPlayer());
-        if (!gun.isReady())return;
+        Player player = event.getPlayer();
+        if (!gunManager.getGuns().containsKey(player))return;
+        Gun gun = gunManager.getGun(player);
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK){
             gun.reload();
         }
@@ -46,9 +46,8 @@ public class Listeners implements Listener {
     public void onHitWithWeapon(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))return;
         Player player = (Player) event.getDamager();
-        if (!Gun.isGun(player.getItemInHand()))return;
-        Gun gun = gunManager.getGun(player);
-        if (gun.shoot()) event.setCancelled(true);
+        if (!gunManager.getGuns().containsKey(player))return;
+        if (gunManager.getGun(player).shoot()) event.setCancelled(true);
     }
     @EventHandler
     public void onProjectileLand(ProjectileHitEvent event) {
@@ -57,6 +56,7 @@ public class Listeners implements Listener {
             event.getEntity().remove();
         }
     }
+    /*
     @EventHandler
     public void playerHoldItem(PlayerItemHeldEvent event) {
         Player player = event.getPlayer();
@@ -100,5 +100,5 @@ public class Listeners implements Listener {
         }{
             gunManager.removeGunIfPresent(player);
         }
-    }
+    }*/
 }

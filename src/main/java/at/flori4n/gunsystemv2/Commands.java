@@ -18,7 +18,6 @@ public class Commands implements CommandExecutor {
             switch (strings[0]) {
                 case "createGun":
                     Gun gun = Gun.createGun(player,strings[1],Integer.parseInt(strings[2]),Integer.parseInt(strings[3]),Integer.parseInt(strings[4]),Integer.parseInt(strings[5]),strings[6],Integer.parseInt(strings[7]));
-                    gunManager.addGun(gun);
                     break;
                 case "getEffectNames":
                     player.sendMessage(getEffectNames());

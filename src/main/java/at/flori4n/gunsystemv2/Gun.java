@@ -143,8 +143,7 @@ public class Gun {
     private void updateGunStats(){
         Gun gun = createGun(holder,name,damage,reloadTime,speed,magSize,effect,projectileSpeed);
         GunManager gunManager = GunManager.getInstance();
-        gunManager.removeGunIfPresent(holder);
-        gunManager.addGun(gun);
+        gunManager.getGuns().put(holder,gun);
     }
 
     public void setTimeout(int timeout) {

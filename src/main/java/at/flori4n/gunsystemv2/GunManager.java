@@ -19,7 +19,9 @@ public class GunManager {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(GunSystemV2.getPlugin(),new Runnable(){
             @Override
             public void run() {
-                guns.forEach((player, gun) -> gun.update());
+                guns.forEach((player, gun) -> {
+                    gun.update();
+                });
             }
         },0,1);
     }

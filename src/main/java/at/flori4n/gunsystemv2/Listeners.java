@@ -1,19 +1,20 @@
 package at.flori4n.gunsystemv2;
 
 import com.google.gson.JsonIOException;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 
 public class Listeners implements Listener {
@@ -66,14 +67,6 @@ public class Listeners implements Listener {
                 new Gun(item, player)
         );
     }
-    @EventHandler
-    public void inventoryDrag(InventoryDragEvent event) {
-        System.out.println(event.getView().getTitle());
-        System.out.println(event.getResult());
-        System.out.println(event.getView().getCursor().getType());
-        event.getInventorySlots().forEach(integer -> System.out.println(integer));
-    }
-
     //needed cuz swaps in inventory don't call item in hand event
     @EventHandler
     public void inventoryClick(InventoryClickEvent event) {
@@ -85,5 +78,19 @@ public class Listeners implements Listener {
         if (!Gun.isGun(item))return;
         gunManager.addGun(new Gun(item, player));
     }
+    @EventHandler
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        Bukkit.getScheduler().scheduleSyncDelayedTask(GunSystemV2.getPlugin(), () -> {
+            if (Gun.isGun(player.getItemInHand())){
+                gunManager.addGun(new Gun(player.getItemInHand(), player.getPlayer()));
+            };
+        },2);
+    }
 
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+        gunManager.removeGunIfPresent(player);
+    }
 }

@@ -19,7 +19,7 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 public class Gun {
-    ItemStack item;
+    private ItemStack item;
     private Player holder;
     private int reloadTime;
     private int magSize;
@@ -46,28 +46,29 @@ public class Gun {
         status = lore.get(5).split(" ")[1];
         effect = (lore.get(7).split(" ")[1]);
         projectileSpeed = Integer.parseInt(lore.get(8).split(" ")[1]);
-
         name = item.getItemMeta().getDisplayName();
     }
 
     private void updateLore() {
-        ItemMeta meta = holder.getItemInHand().getItemMeta();
+        ItemMeta meta = item.getItemMeta();
         List<String> lore = meta.getLore();
         lore.set(4, "Timeout: "+timeout);
         lore.set(5, "Status: "+ status);
         lore.set(0,currMag+"/"+magSize);
         meta.setLore(lore);
-        item.setItemMeta(meta);
+        holder.getItemInHand().setItemMeta(meta);
     }
 
     public void update(){
         if (timeout == 1)status = "-";
-        if (timeout>0) timeout--;
+        if (timeout>0){
+            timeout--;
+            updateLore();
+        }
         if (!status.equals("-"))
             holder.sendTitle(new Title(ChatColor.RED+status,String.valueOf(timeout),0,5,0));
         else
             holder.sendTitle(new Title("", currMag+"/"+magSize,0,5,0));
-        updateLore();
     }
 
     public boolean isReady(){
@@ -114,8 +115,7 @@ public class Gun {
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
         projectile.setShooter(holder);
-
-        holder.getLocation().getWorld().playSound(holder.getLocation(), Sound.PISTON_EXTEND,2f,2f);
+        holder.getLocation().getWorld().playSound(holder.getLocation(), Sound.PISTON_RETRACT,2f,2f);
         updateLore();
         return true;
     };

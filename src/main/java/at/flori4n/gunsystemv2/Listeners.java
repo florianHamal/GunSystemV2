@@ -95,7 +95,10 @@ public class Listeners implements Listener {
     @EventHandler
     public void pickUpItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
-        if (!Gun.isGun(player.getItemInHand()))return;
-        gunManager.addGun(new Gun(player.getItemInHand(), player));
+        if (Gun.isGun(player.getItemInHand())){
+            gunManager.addGun(new Gun(player.getItemInHand(), player));
+        }{
+            gunManager.removeGunIfPresent(player);
+        }
     }
 }

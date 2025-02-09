@@ -12,7 +12,6 @@ public class Commands implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         Player player = (Player) commandSender;
-        GunManager gunManager = GunManager.getInstance();
         if (!player.hasPermission("setup"))return false;
         try {
             switch (strings[0]) {

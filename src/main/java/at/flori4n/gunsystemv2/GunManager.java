@@ -13,11 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class GunManager {
-    private static GunManager instance;
-    @Getter
-    @Setter
-    private Map<Player,Gun> guns = new HashMap<>();
-    private void start(){
+    public static void start(){
         //gun update coroutine
         Bukkit.getScheduler().scheduleSyncRepeatingTask(GunSystemV2.getPlugin(),new Runnable(){
             @Override
@@ -29,12 +25,5 @@ public class GunManager {
                 }
             }
         },0,1);
-    }
-    private GunManager(){
-        start();
-    }
-    public static GunManager getInstance(){
-        if (instance == null)instance = new GunManager();
-        return instance;
     }
 }

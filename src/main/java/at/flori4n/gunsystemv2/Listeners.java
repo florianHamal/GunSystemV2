@@ -87,10 +87,15 @@ public class Listeners implements Listener {
             };
         },2);
     }
-
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         gunManager.removeGunIfPresent(player);
+    }
+    @EventHandler
+    public void pickUpItem(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        if (!Gun.isGun(player.getItemInHand()))return;
+        gunManager.addGun(new Gun(player.getItemInHand(), player));
     }
 }

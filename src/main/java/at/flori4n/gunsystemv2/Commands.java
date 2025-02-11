@@ -30,6 +30,8 @@ public class Commands implements CommandExecutor {
                                         "/guns getEffectNames\n"+
                                         "/guns createGun name damage reloadTime speed magSize effect projectileSpeed\n"+
                                         "/guns {setName,setDamage,setReloadTime,setSpeed,setMagSize,setEffect,setProjectileSpeed}\n"+
+                                        "/guns export " +
+                                        "/guns import "+
                                         "--------------------");
                     break;
                 case "setName":

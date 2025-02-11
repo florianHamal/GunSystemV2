@@ -4,8 +4,12 @@ import org.bukkit.Effect;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Commands implements CommandExecutor {
@@ -56,6 +60,12 @@ public class Commands implements CommandExecutor {
                     if (!Gun.isGun(player.getItemInHand()))break;
                     new Gun(player.getItemInHand(),player).setProjectileSpeed(Integer.parseInt(strings[1]));
                     break;
+                case "export":
+                    exportGun(player.getItemInHand());
+                    break;
+                case "import":
+                    importGun().forEach(g->player.getInventory().addItem(g));
+                    break;
                 default:
                     player.sendMessage("wrong Command");
             }
@@ -63,6 +73,17 @@ public class Commands implements CommandExecutor {
             player.sendMessage(e.getMessage());
         }
         return false;
+    }
+    private void exportGun(ItemStack gun){
+        FileConfiguration config = GunSystemV2.getPlugin().getConfig();
+        List<ItemStack> guns = (List<ItemStack>) config.getList("exportGuns");
+        if (guns==null)guns = new ArrayList<>();
+        guns.add(gun);
+        config.set("exportGuns",guns);
+        GunSystemV2.getPlugin().saveConfig();
+    }
+    public List<ItemStack> importGun(){
+        return (List<ItemStack>) GunSystemV2.getPlugin().getConfig().getList("exportGuns");
     }
 
 

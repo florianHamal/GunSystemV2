@@ -63,10 +63,10 @@ public class Commands implements CommandExecutor {
                     new Gun(player.getItemInHand(),player).setProjectileSpeed(Integer.parseInt(strings[1]));
                     break;
                 case "export":
-                    exportGun(player.getItemInHand());
+                    exportGun(player.getItemInHand(),strings[1]);
                     break;
                 case "import":
-                    importGun().forEach(g->player.getInventory().addItem(g));
+                    importGun(strings[1]).forEach(g->player.getInventory().addItem(g));
                     break;
                 default:
                     player.sendMessage("wrong Command");
@@ -76,16 +76,16 @@ public class Commands implements CommandExecutor {
         }
         return false;
     }
-    private void exportGun(ItemStack gun){
+    private void exportGun(ItemStack gun,String profile){
         FileConfiguration config = GunSystemV2.getPlugin().getConfig();
-        List<ItemStack> guns = (List<ItemStack>) config.getList("exportGuns");
+        List<ItemStack> guns = (List<ItemStack>) config.getList(profile);
         if (guns==null)guns = new ArrayList<>();
         guns.add(gun);
-        config.set("exportGuns",guns);
+        config.set(profile,guns);
         GunSystemV2.getPlugin().saveConfig();
     }
-    public List<ItemStack> importGun(){
-        return (List<ItemStack>) GunSystemV2.getPlugin().getConfig().getList("exportGuns");
+    public List<ItemStack> importGun(String profile){
+        return (List<ItemStack>) GunSystemV2.getPlugin().getConfig().getList(profile);
     }
 
 

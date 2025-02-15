@@ -37,7 +37,7 @@ public class Listeners implements Listener {
     public void onHitWithWeapon(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))return;
         Player player = (Player) event.getDamager();
-        if (Gun.isGun(player.getItemInHand()))return;
+        if (!Gun.isGun(player.getItemInHand()))return;
         Gun gun = new Gun(player.getItemInHand(),player);
         if (gun.shoot()) event.setCancelled(true);
     }

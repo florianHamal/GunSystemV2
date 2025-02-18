@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 import org.github.paperspigot.Title;
 
 import java.util.ArrayList;
@@ -109,7 +110,7 @@ public class Gun {
         currMag --;
         Arrow projectile = holder.launchProjectile(Arrow.class);
         timeout=speed;
-        projectile.setVelocity(projectile.getVelocity().multiply(projectileSpeed));
+        projectile.setVelocity(clampVelocity(projectile.getVelocity().multiply(projectileSpeed)));
         projectile.setMetadata(SIGNATURE+".damage", new FixedMetadataValue(GunSystemV2.getPlugin(),damage));
         projectile.setMetadata(SIGNATURE+".effect", new FixedMetadataValue(GunSystemV2.getPlugin(),effect));
         ParticleManager.getInstance().addProjectile(projectile);
@@ -175,5 +176,12 @@ public class Gun {
     public void setEffect(String effect) {
         this.effect = effect;
         updateGunStats();
+    }
+    //Helper method to fix invalid Velocity values
+    private Vector clampVelocity(Vector velocity){
+        double maxVelocity = 4;
+        if(velocity.length() > maxVelocity)
+            return velocity.normalize().multiply(maxVelocity);
+        return velocity;
     }
 }

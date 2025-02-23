@@ -28,7 +28,7 @@ public class Commands implements CommandExecutor {
                 case "help":
                     player.sendMessage("--------help--------\n"+
                                         "/guns getEffectNames\n"+
-                                        "/guns createGun <name> <damage> <reloadTime> <speed> <magSize> <effect> <projectileSpeed>\n"+
+                                        "/guns createGun <name> <damage> <reloadTime> <speed> <magSize> <effect/color> <projectileSpeed>\n"+
                                         "/guns {setName,setDamage,setReloadTime,setSpeed,setMagSize,setEffect,setProjectileSpeed}\n"+
                                         "/guns export <profile>" +
                                         "/guns import <profile>"+

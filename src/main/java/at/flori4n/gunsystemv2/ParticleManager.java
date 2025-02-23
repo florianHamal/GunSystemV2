@@ -27,12 +27,12 @@ public class ParticleManager {
             @Override
             public void run() {
                 for (Projectile projectile:projectiles){
-                    if (!projectile.hasMetadata(Gun.SIGNATURE+".effect"))continue;
-                    Effect effect = Effect.getByName(projectile.getMetadata(Gun.SIGNATURE+".effect").get(0).asString());
-                    if (effect != null)
-                        projectile.getWorld().spigot().playEffect(projectile.getLocation(),effect,1,1,0,0,0,0.01f,1 ,500);
-
-                    sendColorParticle(projectile.getLocation(),Color.blue);
+                    String effect = projectile.getMetadata(Gun.SIGNATURE+".effect").get(0).asString();
+                    if (Effect.getByName(effect)!=null){
+                        projectile.getWorld().spigot().playEffect(projectile.getLocation(),Effect.getByName(effect),1,1,0,0,0,0.01f,1 ,500);
+                    }else{
+                        sendColorParticle(projectile.getLocation(),getColorByName(effect)); 
+                    }
                 }
             }
         },0,1);
@@ -75,6 +75,14 @@ public class ParticleManager {
     }
     public void removeProjectile(Projectile projectile){
         projectiles.remove(projectile);
+    }
+    public static Color getColorByName(String name){
+        try {
+            Color c = (Color) Color.class.getField(name).get(null);
+            return c;
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+            return null;
+        }
     }
 
 }
